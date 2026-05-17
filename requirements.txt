@@ -1,0 +1,6 @@
+pandas==2.1.0
+scikit-learn==1.3.0
+arxiv==2.1.0  # Library khusus untuk narik data API arXiv dengan mudah
+streamlit==1.26.0
+evidently==0.4.5
+jupyter==1.0.0

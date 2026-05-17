@@ -29,6 +29,11 @@ jobs:
       run: |
         pytest tests/
 
+    - name: Tahap 1.5 - Prepare Data (Ingest & Preprocess)
+      run: |
+        python bulk_ingest.py
+        python src/processing/preprocess.py
+
     - name: Tahap 2 - Automated Training
       run: |
         python src/intelligence/train.py --n_estimators 100 --max_depth 10

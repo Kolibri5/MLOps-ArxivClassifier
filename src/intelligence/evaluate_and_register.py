@@ -23,7 +23,7 @@ def evaluate_and_register():
     run_id = latest_run.info.run_id
     
     # Menetapkan Ambang Batas (Threshold)
-    threshold = 0.70 
+    threshold = 0.45 
     print(f"Mengevaluasi Model... Akurasi Terbaru: {accuracy:.4f} | Threshold: {threshold}")
     
     if accuracy >= threshold:

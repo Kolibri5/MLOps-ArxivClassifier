@@ -11,6 +11,7 @@ import mlflow.sklearn
 
 def main(n_estimators, max_depth):
     # Setup MLflow tracking
+    mlflow.set_tracking_uri("file:./mlruns")
     mlflow.set_experiment("ArXiv_Classification_Experiment")
     
     with mlflow.start_run():

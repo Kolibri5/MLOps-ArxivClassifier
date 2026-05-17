@@ -60,3 +60,10 @@ Dataset hasil preprocessing siap digunakan untuk proses pelatihan model klasifik
 ```bash
 python src/processing/preprocess.py
 ```
+
+## Manajemen Versi Data (Data Versioning)
+
+Proyek ini menggunakan **DVC (Data Version Control)** untuk melacak perubahan *dataset* seiring berjalannya waktu (*Continual Learning*).
+- File data aktual (`.json`, `.csv`) diabaikan oleh Git (via `.gitignore`) agar repositori tetap ringan.
+- DVC menghasilkan file penunjuk (`.dvc`) yang berisi *hash* unik dari *dataset* pada titik waktu tertentu. File `.dvc` inilah yang disimpan di Git.
+- Alur pembaruan data: Setiap kali skrip *Ingestion* menarik data baru, jalankan `dvc add data/raw data/processed` diikuti dengan `git commit` pada file `.dvc` yang diperbarui.

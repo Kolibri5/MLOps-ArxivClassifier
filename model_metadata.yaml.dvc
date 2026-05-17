@@ -1,0 +1,5 @@
+outs:
+- md5: 26107827efd735d105859bbaf3dd45f0
+  size: 232
+  hash: md5
+  path: model_metadata.yaml

@@ -67,3 +67,7 @@ Proyek ini menggunakan **DVC (Data Version Control)** untuk melacak perubahan *d
 - File data aktual (`.json`, `.csv`) diabaikan oleh Git (via `.gitignore`) agar repositori tetap ringan.
 - DVC menghasilkan file penunjuk (`.dvc`) yang berisi *hash* unik dari *dataset* pada titik waktu tertentu. File `.dvc` inilah yang disimpan di Git.
 - Alur pembaruan data: Setiap kali skrip *Ingestion* menarik data baru, jalankan `dvc add data/raw data/processed` diikuti dengan `git commit` pada file `.dvc` yang diperbarui.
+
+## Model Registry & Deployment Readiness
+- **Model Aktif:** `ArXiv_Classifier_Model` (Versi 1, Status: Production)
+- **Cara Inferensi:** Skrip `src/intelligence/inference.py` memuat model secara dinamis melalui URI `models:/ArXiv_Classifier_Model/Production`.

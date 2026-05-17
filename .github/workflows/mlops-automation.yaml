@@ -1,0 +1,43 @@
+name: MLOps End-to-End Pipeline
+
+# Memicu pipeline saat ada push ke branch main atau branch ini
+on:
+  push:
+    branches: [ "main", "feat/mlops-automation" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  mlops-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pytest
+
+    - name: Tahap 1 - Automated Testing
+      run: |
+        pytest tests/
+
+    - name: Tahap 1.5 - Prepare Data (Ingest & Preprocess)
+      run: |
+        python bulk_ingest.py
+        python src/processing/preprocess.py
+
+    - name: Tahap 2 - Automated Training
+      run: |
+        python src/intelligence/train.py --n_estimators 100 --max_depth 10
+
+    - name: Tahap 3 & 4 - Model Evaluation & Auto-Registry
+      run: |
+        python src/intelligence/evaluate_and_register.py

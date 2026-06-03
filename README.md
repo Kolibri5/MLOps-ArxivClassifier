@@ -90,3 +90,27 @@ Sistem ini telah dikontainerisasi menggunakan Docker. Untuk menjalankan API Infe
     ```bash
     docker compose down
     ```
+
+## Skalabilitas dan Kinerja Tinggi (Horizontal Scaling)
+
+Sistem ini dirancang agar tahan banting (*fault-tolerant*) dan mampu menangani lonjakan lalu lintas (*traffic*) pengguna menggunakan fitur kloning kontainer dari Docker Compose. Secara bawaan, layanan inferensi API berjalan dengan **3 replika** secara paralel.
+
+### Cara Mengakses Endpoint API yang Diskalakan
+
+Sistem memetakan lalu lintas jaringan menggunakan rentang *port* (contoh: `8000-8002:8000`). Docker secara cerdas mendistribusikan masing-masing replika ke pintu masuk (*port*) yang berbeda di sistem operasi Anda. 
+
+Anda dapat mengakses dokumentasi interaktif (Swagger UI) dari setiap replika secara terpisah melalui tautan berikut:
+* **Replika 1:** [http://localhost:8000/docs](http://localhost:8000/docs)
+* **Replika 2:** [http://localhost:8001/docs](http://localhost:8001/docs)
+* **Replika 3:** [http://localhost:8002/docs](http://localhost:8002/docs)
+
+### Cara Menambah/Mengurangi Replika Secara Dinamis
+
+Anda dapat menskalakan (*scale up* atau *scale down*) jumlah kontainer API secara instan **tanpa harus mematikan server** yang sedang berjalan. Gunakan *flag* `--scale` pada terminal Anda:
+
+```bash
+# Contoh: Menskalakan layanan API menjadi 5 kontainer
+docker compose up -d --scale api-service=5
+```
+
+**Catatan Penting:** Jika Anda ingin melakukan scale up lebih dari jumlah rentang port yang telah dideklarasikan di docker-compose.yaml (misalnya lebih dari 3), pastikan Anda juga memperlebar rentang port-nya terlebih dahulu (contoh: ubah menjadi "8000-8005:8000") agar kontainer baru tidak berebut port yang sama.

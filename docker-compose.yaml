@@ -17,13 +17,15 @@ services:
   # Layanan Inferensi (API)
   api-service:
     build: .
-    container_name: fastapi_inference
+    # container_name: fastapi_inference
     ports:
-      - "8000:8000"
+      - "8000-8002:8000"
     environment:
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     volumes:
       - ./:/app
+    deploy:
+      replicas: 3
     depends_on:
       - mlflow-server
     networks:

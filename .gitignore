@@ -223,3 +223,6 @@ arxiv-metadata-oai-snapshot.json
 
 # MLflow Database
 mlflow.db
+
+# MLflow Artifacts (Model Files)
+mlartifacts/

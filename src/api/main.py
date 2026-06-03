@@ -3,12 +3,21 @@ from pydantic import BaseModel
 import mlflow
 import os
 from src.processing.preprocess import clean_text 
+from prometheus_fastapi_instrumentator import Instrumentator
+from prometheus_client import Counter
 
 # Konfigurasi Koneksi ke MLflow Server
 MLFLOW_URI = os.getenv("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
 mlflow.set_tracking_uri(MLFLOW_URI)
 
 app = FastAPI(title="ArXiv Paper Classifier API", version="1.0")
+
+# Metrik Deteksi Data Drift
+PREDICTION_COUNTER = Counter(
+    "model_predictions_total",
+    "Total prediksi model berdasarkan kategori",
+    ["predicted_category"]
+)
 
 # Skema Input dari User
 class PaperInput(BaseModel):
@@ -44,13 +53,19 @@ def predict_category(paper: PaperInput):
     
     # Prediksi menggunakan Pipeline MLflow
     prediction = model.predict([cleaned_text])
+    predicted_cat = prediction[0]
     
+    # Catat Prediksi ke Prometheus
+    PREDICTION_COUNTER.labels(predicted_category=predicted_cat).inc()
+
     return {
         "title": paper.title,
-        "predicted_category": prediction[0],
+        "predicted_category": predicted_cat,
         "status": "success"
     }
 
 @app.get("/")
 def health_check():
     return {"message": "API ArXiv Classifier Aktif dan Siap Menerima Prediksi!"}
+
+Instrumentator().instrument(app).expose(app)

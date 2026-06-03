@@ -271,3 +271,5 @@ widgetsnbextension==4.0.15
 yarl==1.23.0
 zc.lockfile==4.0
 zipp==3.23.1
+prometheus-fastapi-instrumentator
+prometheus-client

@@ -114,3 +114,16 @@ docker compose up -d --scale api-service=5
 ```
 
 **Catatan Penting:** Jika Anda ingin melakukan scale up lebih dari jumlah rentang port yang telah dideklarasikan di docker-compose.yaml (misalnya lebih dari 3), pastikan Anda juga memperlebar rentang port-nya terlebih dahulu (contoh: ubah menjadi "8000-8005:8000") agar kontainer baru tidak berebut port yang sama.
+
+## Observabilitas & Pemantauan
+
+Sistem ini dilengkapi dengan infrastruktur pemantauan (*monitoring*) tingkat produksi untuk melacak kesehatan API dan mendeteksi anomali model (*Data Drift*) secara *real-time*.
+
+Metrik dikumpulkan secara otomatis menggunakan **Prometheus** dan divisualisasikan melalui **Grafana**. Anda dapat mengakses dasbor pemantauan melalui tautan berikut:
+
+* **Prometheus (Target & Metrik Mentah):** [http://localhost:9090](http://localhost:9090)
+* **Grafana (Dasbor Visualisasi):** [http://localhost:3000](http://localhost:3000)
+  * *Default Username:* `admin`
+  * *Default Password:* `admin`
+
+*(Catatan: Grafana akan meminta Anda mengubah kata sandi pada saat login pertama kali, Anda dapat memilih "Skip" untuk melewati tahap tersebut).*

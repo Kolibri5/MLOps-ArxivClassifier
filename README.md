@@ -71,3 +71,22 @@ Proyek ini menggunakan **DVC (Data Version Control)** untuk melacak perubahan *d
 ## Model Registry & Deployment Readiness
 - **Model Aktif:** `ArXiv_Classifier_Model` (Versi 1, Status: Production)
 - **Cara Inferensi:** Skrip `src/intelligence/inference.py` memuat model secara dinamis melalui URI `models:/ArXiv_Classifier_Model/Production`.
+
+## Cara Menjalankan Sistem (Deployment)
+
+Sistem ini telah dikontainerisasi menggunakan Docker. Untuk menjalankan API Inferensi dan MLflow Server secara bersamaan:
+
+1. Pastikan Docker Desktop sudah berjalan di sistem Anda.
+2. Buka terminal di direktori utama proyek.
+3. Jalankan perintah orkestrasi berikut:
+   ```bash
+   docker compose up -d --build
+   ```
+4. Akses layanan melalui browser:
+    - FastAPI (Swagger UI): http://localhost:8000/docs
+    - MLflow Tracking Server: http://localhost:5000
+
+5. Untuk mematikan seluruh layanan, gunakan perintah: 
+    ```bash
+    docker compose down
+    ```

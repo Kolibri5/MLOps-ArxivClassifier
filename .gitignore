@@ -217,3 +217,9 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 /model_metadata.yaml
+
+archive.zip
+arxiv-metadata-oai-snapshot.json
+
+# MLflow Database
+mlflow.db

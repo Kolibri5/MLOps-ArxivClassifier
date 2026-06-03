@@ -255,7 +255,7 @@ uri-template==1.3.0
 urllib3==2.7.0
 uuid6==2025.0.1
 uvicorn==0.47.0
-uvloop==0.22.1
+uvloop==0.22.1 ; sys_platform != 'win32'
 validators==0.35.0
 vine==5.1.0
 voluptuous==0.16.0

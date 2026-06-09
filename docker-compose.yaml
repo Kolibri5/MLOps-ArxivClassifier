@@ -24,6 +24,8 @@ services:
       - MLFLOW_TRACKING_URI=http://mlflow-server:5000
     volumes:
       - ./:/app
+    env_file:
+      - .env
     deploy:
       replicas: 3
     depends_on:
@@ -37,6 +39,7 @@ services:
     container_name: prometheus
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
     ports:
       - "9090:9090"
     networks:
@@ -51,6 +54,8 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
     depends_on:
       - prometheus
     networks:
@@ -59,3 +64,7 @@ services:
 networks:
   mlops-network:
     driver: bridge
+
+volumes:
+  grafana_data:
+  prometheus_data:

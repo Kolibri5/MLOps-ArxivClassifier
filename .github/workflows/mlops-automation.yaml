@@ -1,14 +1,17 @@
-name: MLOps End-to-End Pipeline
+name: MLOps Continuous Training (CT) Pipeline
 
-# Memicu pipeline saat ada push ke branch main atau branch ini
+# DEFINISI SKENARIO PEMICU (TRIGGERS)
 on:
   push:
-    branches: [ "main", "feat/mlops-automation" ]
-  pull_request:
     branches: [ "main" ]
-
+  workflow_dispatch: # Mengizinkan eksekusi manual dari UI GitHub
+  repository_dispatch:
+    types: [grafana-alert-drift, grafana-alert-accuracy] # Skenario A & B: Webhook dari Alert Grafana
+  schedule:
+    - cron: '0 0 * * 0' # Skenario C: Jadwal Rutin (Setiap hari Minggu jam 00:00 UTC)
+    
 jobs:
-  mlops-pipeline:
+  continuous-training:
     runs-on: ubuntu-latest
     
     steps:
@@ -25,13 +28,17 @@ jobs:
         pip install -r requirements.txt
         pip install pytest
 
+    - name: Jalankan MLflow Server Background
+      run: |
+        mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlruns --host 127.0.0.1 --port 5000 &
+        sleep 5
+
     - name: Tahap 1 - Automated Testing
       run: |
         pytest tests/
 
     - name: Tahap 1.5 - Prepare Data (Ingest & Preprocess)
       run: |
-        python bulk_ingest.py
         python src/processing/preprocess.py
 
     - name: Tahap 2 - Automated Training
